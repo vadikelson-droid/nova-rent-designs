@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Rent — Alquiler de Coches de Confianza</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #1b4332;
+            --primary-light: #2d6a4f;
+            --accent: #d4a373;
+            --accent-light: #e9c89b;
+            --warm-bg: #fefaf6;
+            --cream: #fdf6ec;
+            --white: #ffffff;
+            --dark: #1a1a1a;
+            --gray-100: #f5f0eb;
+            --gray-200: #e8e0d8;
+            --gray-400: #a09488;
+            --gray-600: #6b5e52;
+            --gray-800: #3d3429;
+            --radius: 12px;
+        }
+        body { font-family: 'DM Sans', sans-serif; color: var(--dark); background: var(--warm-bg); }
+
+        /* HEADER */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(254,250,246,0.95); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .header .container {
+            display: flex; justify-content: space-between; align-items: center; height: 72px;
+        }
+        .logo { font-family: 'DM Serif Display', serif; font-size: 1.6rem; text-decoration: none; color: var(--primary); }
+        .logo span { color: var(--accent); }
+        .nav { display: flex; gap: 2rem; align-items: center; list-style: none; }
+        .nav a { color: var(--gray-600); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+        .nav a:hover { color: var(--primary); }
+        .btn-nav {
+            background: var(--primary); color: var(--white) !important; padding: 0.55rem 1.5rem;
+            border-radius: 50px;
+        }
+        .btn-nav:hover { background: var(--primary-light); }
+        .menu-btn { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+        .menu-btn span { display: block; width: 24px; height: 2px; background: var(--dark); margin: 5px 0; border-radius: 2px; }
+
+        /* HERO */
+        .hero {
+            padding: 8rem 2rem 5rem; min-height: 100vh;
+            display: flex; align-items: center; position: relative;
+        }
+        .hero .container { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 4rem; align-items: center; width: 100%; }
+        .hero-subtitle {
+            color: var(--accent); font-weight: 600; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1rem;
+            display: flex; align-items: center; gap: 0.7rem;
+        }
+        .hero-subtitle::before {
+            content: ''; width: 30px; height: 2px; background: var(--accent);
+        }
+        .hero h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.5rem, 5vw, 3.8rem); line-height: 1.15;
+            margin-bottom: 1.5rem; color: var(--dark);
+        }
+        .hero h1 em { font-style: italic; color: var(--primary); }
+        .hero p { color: var(--gray-600); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; max-width: 480px; }
+        .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+        .btn-warm {
+            background: var(--primary); color: var(--white); border: none;
+            padding: 1rem 2.2rem; border-radius: 50px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; transition: 0.3s; text-decoration: none;
+            font-family: inherit;
+        }
+        .btn-warm:hover { background: var(--primary-light); transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(27,67,50,0.2); }
+        .btn-warm-outline {
+            background: transparent; color: var(--primary); border: 2px solid var(--primary);
+            padding: 0.9rem 2.2rem; border-radius: 50px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; transition: 0.3s; text-decoration: none; font-family: inherit;
+        }
+        .btn-warm-outline:hover { background: var(--primary); color: var(--white); }
+
+        /* HERO IMAGE AREA */
+        .hero-visual {
+            background: var(--cream); border-radius: 24px; padding: 2.5rem;
+            position: relative; min-height: 450px; display: flex; flex-direction: column;
+            justify-content: center; border: 1px solid var(--gray-200);
+        }
+        .hero-visual-emoji { font-size: 6rem; text-align: center; margin-bottom: 2rem; }
+        .hero-stats {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+        }
+        .stat-box {
+            background: var(--white); border-radius: var(--radius); padding: 1.2rem; text-align: center;
+            border: 1px solid var(--gray-200);
+        }
+        .stat-box .num { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .stat-box .label { font-size: 0.75rem; color: var(--gray-600); margin-top: 0.3rem; }
+
+        /* TRUST STRIP */
+        .trust-strip {
+            background: var(--primary); color: var(--white); padding: 2rem;
+        }
+        .trust-strip .container {
+            display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem;
+            text-align: center;
+        }
+        .trust-point { display: flex; align-items: center; gap: 0.6rem; font-size: 0.9rem; font-weight: 500; }
+        .trust-point span { font-size: 1.3rem; }
+
+        /* SEARCH BAR */
+        .search-section { padding: 4rem 2rem; background: var(--cream); }
+        .search-box {
+            background: var(--white); border-radius: 20px; padding: 2rem;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.05); border: 1px solid var(--gray-200);
+        }
+        .search-box h3 { font-family: 'DM Serif Display', serif; font-size: 1.3rem; margin-bottom: 1.5rem; text-align: center; }
+        .search-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; align-items: end; }
+        .field label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--gray-600); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .field input, .field select {
+            width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--gray-200);
+            border-radius: 10px; font-size: 0.9rem; font-family: inherit;
+            background: var(--warm-bg); transition: 0.3s;
+        }
+        .field input:focus, .field select:focus { outline: none; border-color: var(--primary); background: white; }
+        .btn-search {
+            background: var(--primary); color: white; border: none;
+            padding: 0.8rem 2rem; border-radius: 10px; font-size: 0.95rem;
+            font-weight: 600; cursor: pointer; transition: 0.3s; width: 100%;
+            height: 48px; font-family: inherit;
+        }
+        .btn-search:hover { background: var(--primary-light); }
+
+        /* SECTION */
+        .section { padding: 5rem 2rem; }
+        .section-head { text-align: center; margin-bottom: 3rem; }
+        .section-head h2 { font-family: 'DM Serif Display', serif; font-size: clamp(1.8rem, 3vw, 2.5rem); margin-bottom: 0.8rem; }
+        .section-head p { color: var(--gray-600); font-size: 1rem; max-width: 500px; margin: 0 auto; }
+
+        /* CARS */
+        .cars-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+        .car-card {
+            background: var(--white); border-radius: 16px; overflow: hidden;
+            border: 1px solid var(--gray-200); transition: 0.3s;
+        }
+        .car-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.06); }
+        .car-img {
+            height: 200px; background: var(--cream);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4rem; position: relative;
+        }
+        .car-label {
+            position: absolute; top: 1rem; left: 1rem;
+            background: var(--primary); color: white;
+            padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.72rem; font-weight: 700;
+        }
+        .car-details { padding: 1.5rem; }
+        .car-details h3 { font-size: 1.15rem; margin-bottom: 0.8rem; }
+        .car-specs { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+        .spec {
+            font-size: 0.75rem; color: var(--gray-600); background: var(--cream);
+            padding: 0.3rem 0.7rem; border-radius: 6px;
+        }
+        .car-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1.2rem; border-top: 1px solid var(--gray-100); }
+        .price { font-size: 1.6rem; font-weight: 700; color: var(--primary); }
+        .price span { font-size: 0.8rem; font-weight: 400; color: var(--gray-400); }
+        .btn-reserve {
+            background: var(--accent); color: var(--dark); border: none;
+            padding: 0.6rem 1.4rem; border-radius: 50px; font-weight: 600;
+            cursor: pointer; transition: 0.3s; font-size: 0.85rem; font-family: inherit;
+        }
+        .btn-reserve:hover { background: var(--accent-light); }
+
+        /* PROMISES */
+        .promises-section { background: var(--cream); }
+        .promises-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+        .promise-card {
+            background: var(--white); padding: 2rem; border-radius: 16px;
+            border: 1px solid var(--gray-200); transition: 0.3s;
+        }
+        .promise-card:hover { border-color: var(--primary); }
+        .promise-icon {
+            width: 52px; height: 52px; background: var(--cream); border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem; margin-bottom: 1.2rem;
+        }
+        .promise-card h3 { font-size: 1.05rem; margin-bottom: 0.6rem; }
+        .promise-card p { color: var(--gray-600); font-size: 0.88rem; line-height: 1.6; }
+
+        /* TESTIMONIALS */
+        .reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .review {
+            background: var(--white); padding: 2rem; border-radius: 16px;
+            border: 1px solid var(--gray-200); position: relative;
+        }
+        .review::before {
+            content: '\201C'; position: absolute; top: 1rem; right: 1.5rem;
+            font-size: 4rem; color: var(--gray-200); font-family: serif; line-height: 1;
+        }
+        .review-stars { color: var(--accent); font-size: 1.1rem; margin-bottom: 1rem; }
+        .review-text { color: var(--gray-600); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.2rem; }
+        .reviewer { display: flex; align-items: center; gap: 0.8rem; }
+        .reviewer-pic {
+            width: 44px; height: 44px; border-radius: 50%;
+            background: var(--primary); color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.9rem;
+        }
+        .reviewer-name { font-weight: 600; font-size: 0.9rem; }
+        .reviewer-from { color: var(--gray-400); font-size: 0.8rem; }
+
+        /* MAP/CONTACT */
+        .contact-section { background: var(--cream); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .contact-info h2 { font-family: 'DM Serif Display', serif; font-size: 2rem; margin-bottom: 1.5rem; }
+        .contact-item { display: flex; gap: 1rem; margin-bottom: 1.5rem; align-items: flex-start; }
+        .contact-icon {
+            width: 44px; height: 44px; min-width: 44px; background: var(--white);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; border: 1px solid var(--gray-200);
+        }
+        .contact-item h4 { font-size: 0.95rem; margin-bottom: 0.2rem; }
+        .contact-item p { color: var(--gray-600); font-size: 0.9rem; }
+        .contact-item a { color: var(--primary); text-decoration: none; font-weight: 500; }
+        .map-placeholder {
+            background: var(--white); border-radius: 16px; height: 350px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--gray-200); color: var(--gray-400);
+            font-size: 1.2rem;
+        }
+
+        /* CTA */
+        .cta-warm {
+            background: var(--primary); padding: 5rem 2rem; text-align: center;
+        }
+        .cta-warm h2 { font-family: 'DM Serif Display', serif; color: white; font-size: clamp(1.8rem, 3vw, 2.5rem); margin-bottom: 1rem; }
+        .cta-warm p { color: rgba(255,255,255,0.7); font-size: 1.05rem; margin-bottom: 2rem; }
+        .cta-warm-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+        .btn-accent {
+            background: var(--accent); color: var(--dark); border: none;
+            padding: 1rem 2.5rem; border-radius: 50px; font-size: 1rem;
+            font-weight: 700; cursor: pointer; transition: 0.3s; text-decoration: none; font-family: inherit;
+        }
+        .btn-accent:hover { background: var(--accent-light); transform: translateY(-2px); }
+        .btn-ghost {
+            background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3);
+            padding: 1rem 2.5rem; border-radius: 50px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; transition: 0.3s; text-decoration: none; font-family: inherit;
+        }
+        .btn-ghost:hover { border-color: white; }
+
+        /* FOOTER */
+        .footer { background: var(--dark); color: var(--gray-400); padding: 4rem 2rem 2rem; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; }
+        .footer .logo { color: white; display: block; margin-bottom: 1rem; }
+        .footer-desc { font-size: 0.88rem; line-height: 1.7; }
+        .footer h4 { color: white; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.2rem; }
+        .footer ul { list-style: none; }
+        .footer li { margin-bottom: 0.5rem; }
+        .footer a { color: var(--gray-400); text-decoration: none; font-size: 0.88rem; transition: 0.3s; }
+        .footer a:hover { color: white; }
+        .footer-bottom {
+            margin-top: 3rem; padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex; justify-content: space-between; font-size: 0.82rem;
+        }
+
+        /* WHATSAPP */
+        .wa {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+            width: 58px; height: 58px; background: #25d366; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(37,211,102,0.4); text-decoration: none;
+            transition: 0.3s; font-size: 1.7rem; color: white;
+        }
+        .wa:hover { transform: scale(1.1); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero .container { grid-template-columns: 1fr; }
+            .hero-visual { min-height: auto; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav { display: none; }
+            .menu-btn { display: block; }
+            .nav.show {
+                display: flex; flex-direction: column;
+                position: absolute; top: 72px; left: 0; right: 0;
+                background: var(--warm-bg); padding: 1.5rem 2rem; gap: 1rem;
+                border-bottom: 1px solid var(--gray-200);
+            }
+            .hero { padding: 7rem 1.5rem 3rem; min-height: auto; }
+            .hero-stats { grid-template-columns: repeat(3, 1fr); }
+            .cars-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+            .footer-bottom { flex-direction: column; gap: 0.5rem; }
+            .section { padding: 3.5rem 1.5rem; }
+            .trust-strip .container { flex-direction: column; gap: 1rem; }
+        }
+        @media (max-width: 480px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            .cta-warm-btns { flex-direction: column; align-items: center; }
+            .hero-stats { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="container">
+        <a href="#" class="logo">Nova<span>Rent</span></a>
+        <ul class="nav" id="mainNav">
+            <li><a href="#buscar">Reservar</a></li>
+            <li><a href="#coches">Vehículos</a></li>
+            <li><a href="#ventajas">Ventajas</a></li>
+            <li><a href="#opiniones">Opiniones</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+            <li><a href="tel:+34600000000" class="btn-nav">&#128222; Llamar</a></li>
+        </ul>
+        <button class="menu-btn" onclick="document.getElementById('mainNav').classList.toggle('show')">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="container">
+        <div class="hero-left">
+            <div class="hero-subtitle">Alquiler de confianza</div>
+            <h1>Alquila con <em>tranquilidad</em>, conduce con <em>libertad</em></h1>
+            <p>Más de 10 años ofreciendo el mejor servicio de alquiler de coches. Precios justos, vehículos impecables y atención humana de verdad.</p>
+            <div class="hero-ctas">
+                <a href="#buscar" class="btn-warm">Reservar Ahora</a>
+                <a href="#coches" class="btn-warm-outline">Ver Flota</a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hero-visual-emoji">&#128663;</div>
+            <div class="hero-stats">
+                <div class="stat-box">
+                    <div class="num">10+</div>
+                    <div class="label">Años</div>
+                </div>
+                <div class="stat-box">
+                    <div class="num">4.9</div>
+                    <div class="label">Google</div>
+                </div>
+                <div class="stat-box">
+                    <div class="num">5K+</div>
+                    <div class="label">Clientes</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+    <div class="container">
+        <div class="trust-point"><span>&#128274;</span> Seguro incluido</div>
+        <div class="trust-point"><span>&#128176;</span> Sin costes ocultos</div>
+        <div class="trust-point"><span>&#9989;</span> Cancelación gratis</div>
+        <div class="trust-point"><span>&#128222;</span> Atención 24/7</div>
+        <div class="trust-point"><span>&#128205;</span> Entrega flexible</div>
+    </div>
+</div>
+
+<!-- SEARCH -->
+<section class="search-section" id="buscar">
+    <div class="container">
+        <div class="search-box">
+            <h3>Encuentra tu coche ideal</h3>
+            <div class="search-grid">
+                <div class="field">
+                    <label>Lugar de recogida</label>
+                    <select>
+                        <option>Aeropuerto</option>
+                        <option>Centro ciudad</option>
+                        <option>Estación de tren</option>
+                        <option>Hotel</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Fecha recogida</label>
+                    <input type="date">
+                </div>
+                <div class="field">
+                    <label>Fecha devolución</label>
+                    <input type="date">
+                </div>
+                <div class="field">
+                    <label>Hora</label>
+                    <input type="time" value="10:00">
+                </div>
+                <div class="field">
+                    <label>&nbsp;</label>
+                    <button class="btn-search">Buscar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CARS -->
+<section class="section" id="coches">
+    <div class="container">
+        <div class="section-head">
+            <h2>Nuestra Flota</h2>
+            <p>Vehículos cuidados al detalle para que disfrutes del camino</p>
+        </div>
+        <div class="cars-grid">
+            <div class="car-card">
+                <div class="car-img">
+                    <div class="car-label">Económico</div>
+                    &#128663;
+                </div>
+                <div class="car-details">
+                    <h3>Seat Ibiza</h3>
+                    <div class="car-specs">
+                        <span class="spec">&#9881; Manual</span>
+                        <span class="spec">&#9981; Gasolina</span>
+                        <span class="spec">&#128101; 5 plazas</span>
+                        <span class="spec">&#10052; A/C</span>
+                    </div>
+                    <div class="car-footer">
+                        <div class="price">25&euro; <span>/día</span></div>
+                        <button class="btn-reserve">Reservar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="car-card">
+                <div class="car-img">
+                    <div class="car-label">Popular</div>
+                    &#128664;
+                </div>
+                <div class="car-details">
+                    <h3>Volkswagen Golf</h3>
+                    <div class="car-specs">
+                        <span class="spec">&#9881; Automático</span>
+                        <span class="spec">&#9981; Diésel</span>
+                        <span class="spec">&#128101; 5 plazas</span>
+                        <span class="spec">&#10052; A/C</span>
+                    </div>
+                    <div class="car-footer">
+                        <div class="price">35&euro; <span>/día</span></div>
+                        <button class="btn-reserve">Reservar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="car-card">
+                <div class="car-img">
+                    <div class="car-label">SUV</div>
+                    &#128665;
+                </div>
+                <div class="car-details">
+                    <h3>Nissan Qashqai</h3>
+                    <div class="car-specs">
+                        <span class="spec">&#9881; Automático</span>
+                        <span class="spec">&#9981; Híbrido</span>
+                        <span class="spec">&#128101; 5 plazas</span>
+                        <span class="spec">&#10052; A/C</span>
+                    </div>
+                    <div class="car-footer">
+                        <div class="price">50&euro; <span>/día</span></div>
+                        <button class="btn-reserve">Reservar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROMISES / WHY US -->
+<section class="section promises-section" id="ventajas">
+    <div class="container">
+        <div class="section-head">
+            <h2>Nuestras Promesas</h2>
+            <p>Lo que nos hace diferentes y por qué miles de clientes confían en nosotros</p>
+        </div>
+        <div class="promises-grid">
+            <div class="promise-card">
+                <div class="promise-icon">&#128176;</div>
+                <h3>Precio transparente</h3>
+                <p>Sin letra pequeña ni sorpresas. Lo que ves es exactamente lo que pagas.</p>
+            </div>
+            <div class="promise-card">
+                <div class="promise-icon">&#128274;</div>
+                <h3>Seguro a todo riesgo</h3>
+                <p>Todos los coches con seguro completo incluido. Sin franquicias ocultas.</p>
+            </div>
+            <div class="promise-card">
+                <div class="promise-icon">&#128222;</div>
+                <h3>Siempre disponibles</h3>
+                <p>Teléfono y WhatsApp 24 horas. Nunca estarás solo en la carretera.</p>
+            </div>
+            <div class="promise-card">
+                <div class="promise-icon">&#128205;</div>
+                <h3>Te lo llevamos</h3>
+                <p>Entrega y recogida en aeropuerto, hotel o la dirección que elijas.</p>
+            </div>
+            <div class="promise-card">
+                <div class="promise-icon">&#9989;</div>
+                <h3>Cancela sin coste</h3>
+                <p>Cambio de planes? Cancela gratis hasta 24h antes de la recogida.</p>
+            </div>
+            <div class="promise-card">
+                <div class="promise-icon">&#11088;</div>
+                <h3>Coches como nuevos</h3>
+                <p>Flota renovada cada 2 años. Siempre en perfecto estado mecánico y estético.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="section" id="opiniones">
+    <div class="container">
+        <div class="section-head">
+            <h2>Lo que dicen de nosotros</h2>
+            <p>Opiniones reales de clientes que han confiado en Nova Rent</p>
+        </div>
+        <div class="reviews-grid">
+            <div class="review">
+                <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="review-text">Un servicio impecable de principio a fin. Me entregaron el coche en el aeropuerto puntualmente y estaba en perfecto estado. Repetiré sin duda.</p>
+                <div class="reviewer">
+                    <div class="reviewer-pic">EM</div>
+                    <div>
+                        <div class="reviewer-name">Elena Moreno</div>
+                        <div class="reviewer-from">Google Reviews</div>
+                    </div>
+                </div>
+            </div>
+            <div class="review">
+                <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="review-text">Lo mejor es la transparencia. El precio que me dijeron fue exactamente lo que pagué. Nada de extras sorpresa. Muy profesionales.</p>
+                <div class="reviewer">
+                    <div class="reviewer-pic">RD</div>
+                    <div>
+                        <div class="reviewer-name">Roberto Díaz</div>
+                        <div class="reviewer-from">Trustpilot</div>
+                    </div>
+                </div>
+            </div>
+            <div class="review">
+                <div class="review-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                <p class="review-text">Trato humano y cercano. Te explican todo con calma y se nota que les importa que estés satisfecho. 100% recomendable.</p>
+                <div class="reviewer">
+                    <div class="reviewer-pic">IS</div>
+                    <div>
+                        <div class="reviewer-name">Isabel Serrano</div>
+                        <div class="reviewer-from">Google Reviews</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section contact-section" id="contacto">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h2>¿Tienes preguntas? Hablemos.</h2>
+                <div class="contact-item">
+                    <div class="contact-icon">&#128222;</div>
+                    <div>
+                        <h4>Teléfono</h4>
+                        <p><a href="tel:+34600000000">+34 600 000 000</a></p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">&#128172;</div>
+                    <div>
+                        <h4>WhatsApp</h4>
+                        <p><a href="https://wa.me/34600000000">Escríbenos al instante</a></p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">&#9993;</div>
+                    <div>
+                        <h4>Email</h4>
+                        <p><a href="mailto:info@nova-rent.com">info@nova-rent.com</a></p>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">&#128205;</div>
+                    <div>
+                        <h4>Dirección</h4>
+                        <p>Tu dirección aquí, España</p>
+                    </div>
+                </div>
+            </div>
+            <div class="map-placeholder">
+                &#127759; Mapa aquí (Google Maps)
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-warm">
+    <h2>¿Listo para tu próxima aventura?</h2>
+    <p>Reserva hoy y viaja con la tranquilidad de estar en buenas manos</p>
+    <div class="cta-warm-btns">
+        <a href="#buscar" class="btn-accent">Reservar Ahora</a>
+        <a href="https://wa.me/34600000000" class="btn-ghost">&#128172; WhatsApp</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <a href="#" class="logo">Nova<span>Rent</span></a>
+                <p class="footer-desc">Tu empresa de confianza para el alquiler de vehículos. Más de 10 años cuidando de cada detalle para que solo te preocupes de disfrutar.</p>
+            </div>
+            <div>
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Nuestra Flota</a></li>
+                    <li><a href="#">Condiciones</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Ayuda</h4>
+                <ul>
+                    <li><a href="#">Preguntas Frecuentes</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#">Privacidad</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Contacto</h4>
+                <ul>
+                    <li><a href="tel:+34600000000">+34 600 000 000</a></li>
+                    <li><a href="mailto:info@nova-rent.com">info@nova-rent.com</a></li>
+                    <li><a href="https://wa.me/34600000000">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>&copy; 2026 Nova Rent. Todos los derechos reservados.</span>
+            <span>Hecho con cariño</span>
+        </div>
+    </div>
+</footer>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/34600000000" class="wa" target="_blank" title="WhatsApp">&#128172;</a>
+
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) t.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('mainNav').classList.remove('show');
+        });
+    });
+</script>
+
+</body>
+</html>

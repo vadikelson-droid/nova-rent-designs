@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Rent — Alquiler de Coches Moderno</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #6c3ce0;
+            --primary-dark: #5429c4;
+            --primary-light: #8b5cf6;
+            --secondary: #06d6a0;
+            --dark: #111827;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+            --radius: 14px;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.07);
+            --shadow-lg: 0 10px 25px -5px rgba(108,60,224,0.15);
+        }
+        body { font-family: 'Poppins', sans-serif; color: var(--dark); overflow-x: hidden; }
+
+        /* HEADER */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(255,255,255,0.9); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        .header-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center; height: 70px;
+        }
+        .logo { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark); }
+        .logo span {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .nav { display: flex; gap: 2rem; align-items: center; list-style: none; }
+        .nav a { color: var(--gray-600); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+        .nav a:hover { color: var(--primary); }
+        .btn-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white !important; padding: 0.55rem 1.3rem; border-radius: 50px;
+            -webkit-text-fill-color: white !important;
+        }
+        .btn-header:hover { box-shadow: var(--shadow-lg); }
+        .burger { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+        .burger span { display: block; width: 22px; height: 2px; background: var(--dark); margin: 5px 0; border-radius: 2px; }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            background: var(--white); position: relative; padding: 7rem 2rem 4rem;
+            overflow: hidden;
+        }
+        .hero-bg-shape {
+            position: absolute; top: -30%; right: -10%;
+            width: 700px; height: 700px; border-radius: 50%;
+            background: linear-gradient(135deg, rgba(108,60,224,0.08), rgba(6,214,160,0.08));
+        }
+        .hero-bg-shape2 {
+            position: absolute; bottom: -20%; left: -5%;
+            width: 400px; height: 400px; border-radius: 50%;
+            background: linear-gradient(135deg, rgba(6,214,160,0.06), rgba(108,60,224,0.04));
+        }
+        .hero-inner { max-width: 1200px; margin: 0 auto; width: 100%; position: relative; z-index: 2;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+        }
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: linear-gradient(135deg, rgba(108,60,224,0.1), rgba(6,214,160,0.1));
+            padding: 0.4rem 1rem; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 600; color: var(--primary); margin-bottom: 1.5rem;
+        }
+        .hero-tag::before { content: ''; width: 8px; height: 8px; background: var(--secondary); border-radius: 50%; }
+        .hero h1 {
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem); font-weight: 800;
+            line-height: 1.15; margin-bottom: 1.2rem; color: var(--dark);
+        }
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .hero p { color: var(--gray-600); font-size: 1.1rem; margin-bottom: 2rem; line-height: 1.7; }
+        .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; border: none; padding: 0.9rem 2rem; border-radius: 50px;
+            font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s;
+            text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .btn-outline {
+            background: transparent; color: var(--dark); border: 2px solid var(--gray-200);
+            padding: 0.85rem 2rem; border-radius: 50px; font-size: 1rem; font-weight: 600;
+            cursor: pointer; transition: 0.3s; text-decoration: none;
+            display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
+
+        /* HERO RIGHT - BOOKING CARD */
+        .booking-card {
+            background: var(--white); border-radius: 20px; padding: 2rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.08); border: 1px solid var(--gray-100);
+        }
+        .booking-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+        .booking-card .subtitle { color: var(--gray-400); font-size: 0.85rem; margin-bottom: 1.5rem; }
+        .input-group { margin-bottom: 1rem; }
+        .input-group label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--gray-600); margin-bottom: 0.4rem; }
+        .input-group input, .input-group select {
+            width: 100%; padding: 0.8rem 1rem; border: 2px solid var(--gray-100);
+            border-radius: 12px; font-size: 0.9rem; font-family: inherit;
+            background: var(--gray-50); transition: 0.3s;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none; border-color: var(--primary); background: white;
+        }
+        .input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+        .btn-book {
+            width: 100%; background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; border: none; padding: 1rem; border-radius: 12px;
+            font-size: 1rem; font-weight: 700; cursor: pointer; transition: 0.3s;
+            margin-top: 0.5rem;
+        }
+        .btn-book:hover { box-shadow: var(--shadow-lg); transform: translateY(-1px); }
+
+        /* BRANDS BAR */
+        .brands {
+            padding: 3rem 2rem; background: var(--gray-50);
+            text-align: center; border-top: 1px solid var(--gray-100);
+            border-bottom: 1px solid var(--gray-100);
+        }
+        .brands p { color: var(--gray-400); font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 1.5rem; }
+        .brands-logos { display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; align-items: center; }
+        .brand-item { font-size: 1.4rem; font-weight: 700; color: var(--gray-200); letter-spacing: 2px; }
+
+        /* SECTION */
+        .section { padding: 6rem 2rem; }
+        .section-title { text-align: center; max-width: 600px; margin: 0 auto 3.5rem; }
+        .section-title h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 800; margin-bottom: 0.8rem; }
+        .section-title p { color: var(--gray-600); font-size: 1rem; }
+
+        /* HOW IT WORKS */
+        .steps-grid { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .step-card { text-align: center; padding: 2rem; position: relative; }
+        .step-number {
+            width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 1.5rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+        }
+        .step-card h3 { font-size: 1.1rem; margin-bottom: 0.6rem; }
+        .step-card p { color: var(--gray-600); font-size: 0.9rem; line-height: 1.6; }
+
+        /* CARS */
+        .cars-section { background: var(--gray-50); }
+        .cars-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+        .car-card {
+            background: white; border-radius: var(--radius); overflow: hidden;
+            transition: 0.3s; border: 1px solid var(--gray-100);
+        }
+        .car-card:hover { transform: translateY(-6px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+        .car-img {
+            height: 200px; background: linear-gradient(135deg, var(--gray-50), var(--gray-100));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 4rem; position: relative;
+        }
+        .car-tag {
+            position: absolute; top: 1rem; left: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; padding: 0.25rem 0.8rem; border-radius: 50px;
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+        }
+        .car-body { padding: 1.5rem; }
+        .car-body h3 { font-size: 1.15rem; margin-bottom: 0.8rem; }
+        .car-features { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+        .car-feat {
+            font-size: 0.75rem; color: var(--gray-600); background: var(--gray-50);
+            padding: 0.3rem 0.7rem; border-radius: 6px; display: flex; align-items: center; gap: 0.3rem;
+        }
+        .car-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 1.2rem; border-top: 1px solid var(--gray-100); }
+        .car-price-tag { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
+        .car-price-tag span { font-size: 0.8rem; font-weight: 400; color: var(--gray-400); }
+        .btn-car {
+            background: var(--dark); color: white; border: none;
+            padding: 0.6rem 1.4rem; border-radius: 50px; font-weight: 600;
+            cursor: pointer; transition: 0.3s; font-size: 0.85rem;
+        }
+        .btn-car:hover { background: var(--primary); }
+
+        /* BENEFITS */
+        .benefits-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .benefit-card {
+            padding: 2rem; border-radius: var(--radius); background: white;
+            border: 2px solid var(--gray-100); transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .benefit-card:hover { border-color: var(--primary); }
+        .benefit-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary)); opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .benefit-card:hover::before { opacity: 1; }
+        .benefit-icon {
+            width: 50px; height: 50px; border-radius: 12px; margin-bottom: 1.2rem;
+            display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+            background: linear-gradient(135deg, rgba(108,60,224,0.1), rgba(6,214,160,0.08));
+        }
+        .benefit-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+        .benefit-card p { color: var(--gray-600); font-size: 0.88rem; line-height: 1.6; }
+
+        /* TESTIMONIALS */
+        .testimonials { background: var(--gray-50); }
+        .test-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .test-card { background: white; border-radius: var(--radius); padding: 2rem; border: 1px solid var(--gray-100); }
+        .test-stars { color: #f59e0b; margin-bottom: 1rem; font-size: 1rem; }
+        .test-text { color: var(--gray-600); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.2rem; font-style: italic; }
+        .test-author { display: flex; align-items: center; gap: 0.8rem; }
+        .test-avatar {
+            width: 42px; height: 42px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-weight: 700; font-size: 0.9rem;
+        }
+        .test-name { font-weight: 600; font-size: 0.9rem; }
+        .test-where { color: var(--gray-400); font-size: 0.8rem; }
+
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 5rem 2rem; text-align: center; position: relative; overflow: hidden;
+        }
+        .cta::before {
+            content: ''; position: absolute; top: -50%; right: -10%;
+            width: 500px; height: 500px; border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+        }
+        .cta h2 { color: white; font-size: clamp(1.8rem, 3vw, 2.5rem); margin-bottom: 1rem; position: relative; }
+        .cta p { color: rgba(255,255,255,0.7); font-size: 1.05rem; margin-bottom: 2rem; position: relative; }
+        .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; }
+        .btn-cta-white {
+            background: white; color: var(--primary); border: none;
+            padding: 1rem 2.5rem; border-radius: 50px; font-size: 1rem;
+            font-weight: 700; cursor: pointer; transition: 0.3s; text-decoration: none;
+        }
+        .btn-cta-white:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .btn-cta-ghost {
+            background: transparent; color: white; border: 2px solid rgba(255,255,255,0.3);
+            padding: 1rem 2.5rem; border-radius: 50px; font-size: 1rem;
+            font-weight: 600; cursor: pointer; transition: 0.3s; text-decoration: none;
+        }
+        .btn-cta-ghost:hover { border-color: white; }
+
+        /* FOOTER */
+        .footer { background: var(--dark); color: var(--gray-400); padding: 4rem 2rem 2rem; }
+        .footer-inner {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+        }
+        .footer .logo { color: white; display: block; margin-bottom: 1rem; }
+        .footer .logo span { -webkit-text-fill-color: var(--secondary); }
+        .footer-desc { font-size: 0.88rem; line-height: 1.7; }
+        .footer h4 { color: white; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.2rem; }
+        .footer ul { list-style: none; }
+        .footer li { margin-bottom: 0.5rem; }
+        .footer a { color: var(--gray-400); text-decoration: none; font-size: 0.88rem; transition: 0.3s; }
+        .footer a:hover { color: white; }
+        .footer-bottom {
+            max-width: 1200px; margin: 3rem auto 0; padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display: flex; justify-content: space-between; font-size: 0.82rem;
+        }
+
+        /* WHATSAPP */
+        .wa-btn {
+            position: fixed; bottom: 2rem; right: 2rem; z-index: 999;
+            width: 56px; height: 56px; background: #25d366; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 15px rgba(37,211,102,0.4); text-decoration: none;
+            transition: 0.3s; font-size: 1.6rem; color: white;
+        }
+        .wa-btn:hover { transform: scale(1.1); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .hero-inner { grid-template-columns: 1fr; }
+            .hero-bg-shape { width: 400px; height: 400px; right: -20%; top: -10%; }
+        }
+        @media (max-width: 768px) {
+            .nav { display: none; }
+            .burger { display: block; }
+            .nav.open {
+                display: flex; flex-direction: column; position: absolute;
+                top: 70px; left: 0; right: 0; background: white;
+                padding: 1.5rem 2rem; gap: 1rem; border-bottom: 1px solid var(--gray-200);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            }
+            .hero { padding: 7rem 1.5rem 3rem; min-height: auto; }
+            .steps-grid { grid-template-columns: 1fr; max-width: 400px; }
+            .cars-grid { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+            .footer-bottom { flex-direction: column; gap: 0.5rem; }
+            .section { padding: 4rem 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .footer-inner { grid-template-columns: 1fr; }
+            .brands-logos { gap: 1.5rem; }
+            .cta-btns { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <div class="header-inner">
+        <a href="#" class="logo">nova<span>rent</span></a>
+        <ul class="nav" id="nav">
+            <li><a href="#pasos">Cómo funciona</a></li>
+            <li><a href="#coches">Vehículos</a></li>
+            <li><a href="#ventajas">Ventajas</a></li>
+            <li><a href="#opiniones">Opiniones</a></li>
+            <li><a href="#" class="btn-header">Reservar</a></li>
+        </ul>
+        <button class="burger" onclick="document.getElementById('nav').classList.toggle('open')">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg-shape"></div>
+    <div class="hero-bg-shape2"></div>
+    <div class="hero-inner">
+        <div class="hero-left">
+            <div class="hero-tag">Disponible 24/7</div>
+            <h1>Tu próximo viaje empieza <span class="highlight">aquí</span></h1>
+            <p>Alquila el coche perfecto en pocos clics. Precios claros, sin letra pequeña y con entrega donde tú elijas.</p>
+            <div class="hero-buttons">
+                <a href="#coches" class="btn-primary">Ver Vehículos &#8594;</a>
+                <a href="tel:+34600000000" class="btn-outline">&#128222; Llamar</a>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="booking-card">
+                <h3>Reserva rápida</h3>
+                <p class="subtitle">Encuentra tu vehículo ideal en segundos</p>
+                <div class="input-group">
+                    <label>Lugar de recogida</label>
+                    <select>
+                        <option>Aeropuerto</option>
+                        <option>Centro ciudad</option>
+                        <option>Estación de tren</option>
+                        <option>Hotel (consultar)</option>
+                    </select>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Fecha recogida</label>
+                        <input type="date">
+                    </div>
+                    <div class="input-group">
+                        <label>Fecha devolución</label>
+                        <input type="date">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label>Hora recogida</label>
+                        <input type="time" value="10:00">
+                    </div>
+                    <div class="input-group">
+                        <label>Hora devolución</label>
+                        <input type="time" value="10:00">
+                    </div>
+                </div>
+                <button class="btn-book">Buscar Disponibilidad</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BRANDS -->
+<div class="brands">
+    <p>Marcas de nuestra flota</p>
+    <div class="brands-logos">
+        <span class="brand-item">SEAT</span>
+        <span class="brand-item">VW</span>
+        <span class="brand-item">TOYOTA</span>
+        <span class="brand-item">NISSAN</span>
+        <span class="brand-item">BMW</span>
+        <span class="brand-item">AUDI</span>
+    </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="pasos">
+    <div class="section-title">
+        <h2>Así de fácil</h2>
+        <p>Reserva tu coche en solo 3 sencillos pasos</p>
+    </div>
+    <div class="steps-grid">
+        <div class="step-card">
+            <div class="step-number">1</div>
+            <h3>Elige fecha y lugar</h3>
+            <p>Selecciona cuándo y dónde necesitas el vehículo</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">2</div>
+            <h3>Selecciona tu coche</h3>
+            <p>Elige entre nuestra amplia flota el que mejor se adapte</p>
+        </div>
+        <div class="step-card">
+            <div class="step-number">3</div>
+            <h3>¡A conducir!</h3>
+            <p>Recoge tu vehículo y disfruta del viaje sin preocupaciones</p>
+        </div>
+    </div>
+</section>
+
+<!-- CARS -->
+<section class="section cars-section" id="coches">
+    <div class="section-title">
+        <h2>Nuestra Flota</h2>
+        <p>Vehículos para todos los gustos y necesidades</p>
+    </div>
+    <div class="cars-grid">
+        <div class="car-card">
+            <div class="car-img">
+                <div class="car-tag">Económico</div>
+                &#128663;
+            </div>
+            <div class="car-body">
+                <h3>Seat Ibiza</h3>
+                <div class="car-features">
+                    <span class="car-feat">&#9881; Manual</span>
+                    <span class="car-feat">&#9981; Gasolina</span>
+                    <span class="car-feat">&#128101; 5 plazas</span>
+                    <span class="car-feat">&#10052; A/C</span>
+                </div>
+                <div class="car-bottom">
+                    <div class="car-price-tag">25&euro; <span>/día</span></div>
+                    <button class="btn-car">Reservar</button>
+                </div>
+            </div>
+        </div>
+        <div class="car-card">
+            <div class="car-img">
+                <div class="car-tag">Popular</div>
+                &#128664;
+            </div>
+            <div class="car-body">
+                <h3>Volkswagen Golf</h3>
+                <div class="car-features">
+                    <span class="car-feat">&#9881; Automático</span>
+                    <span class="car-feat">&#9981; Diésel</span>
+                    <span class="car-feat">&#128101; 5 plazas</span>
+                    <span class="car-feat">&#10052; A/C</span>
+                </div>
+                <div class="car-bottom">
+                    <div class="car-price-tag">35&euro; <span>/día</span></div>
+                    <button class="btn-car">Reservar</button>
+                </div>
+            </div>
+        </div>
+        <div class="car-card">
+            <div class="car-img">
+                <div class="car-tag">SUV</div>
+                &#128665;
+            </div>
+            <div class="car-body">
+                <h3>Nissan Qashqai</h3>
+                <div class="car-features">
+                    <span class="car-feat">&#9881; Automático</span>
+                    <span class="car-feat">&#9981; Híbrido</span>
+                    <span class="car-feat">&#128101; 5 plazas</span>
+                    <span class="car-feat">&#10052; A/C</span>
+                </div>
+                <div class="car-bottom">
+                    <div class="car-price-tag">50&euro; <span>/día</span></div>
+                    <button class="btn-car">Reservar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="section" id="ventajas">
+    <div class="section-title">
+        <h2>¿Por qué elegirnos?</h2>
+        <p>Confianza, transparencia y calidad en cada alquiler</p>
+    </div>
+    <div class="benefits-grid">
+        <div class="benefit-card">
+            <div class="benefit-icon">&#128176;</div>
+            <h3>Sin costes ocultos</h3>
+            <p>El precio que ves es el precio que pagas. Sin sorpresas ni letra pequeña.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">&#128274;</div>
+            <h3>Seguro todo riesgo</h3>
+            <p>Todos los vehículos incluyen seguro completo sin franquicia adicional.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">&#128222;</div>
+            <h3>Soporte 24/7</h3>
+            <p>Asistencia telefónica y en carretera disponible las 24 horas.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">&#128205;</div>
+            <h3>Entrega flexible</h3>
+            <p>Te llevamos el coche al aeropuerto, hotel o donde tú decidas.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">&#9989;</div>
+            <h3>Cancelación gratis</h3>
+            <p>Cancela hasta 24 horas antes sin ningún coste adicional.</p>
+        </div>
+        <div class="benefit-card">
+            <div class="benefit-icon">&#11088;</div>
+            <h3>Flota nueva</h3>
+            <p>Vehículos de menos de 2 años, siempre en perfecto estado.</p>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section testimonials" id="opiniones">
+    <div class="section-title">
+        <h2>Opiniones de clientes</h2>
+        <p>La satisfacción de nuestros clientes nos avala</p>
+    </div>
+    <div class="test-grid">
+        <div class="test-card">
+            <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="test-text">"Increíble experiencia. El coche estaba nuevo y el trato fue excepcional. Repetiré seguro."</p>
+            <div class="test-author">
+                <div class="test-avatar">CR</div>
+                <div>
+                    <div class="test-name">Carlos Ruiz</div>
+                    <div class="test-where">Google Reviews</div>
+                </div>
+            </div>
+        </div>
+        <div class="test-card">
+            <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="test-text">"Reservé por WhatsApp y fue super fácil. Me trajeron el coche al hotel. Servicio de 10."</p>
+            <div class="test-author">
+                <div class="test-avatar">LM</div>
+                <div>
+                    <div class="test-name">Laura Martínez</div>
+                    <div class="test-where">Trustpilot</div>
+                </div>
+            </div>
+        </div>
+        <div class="test-card">
+            <div class="test-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <p class="test-text">"La mejor relación calidad-precio. Transparentes con los precios y muy amables. 100% recomendable."</p>
+            <div class="test-author">
+                <div class="test-avatar">JF</div>
+                <div>
+                    <div class="test-name">Jorge Fernández</div>
+                    <div class="test-where">Google Reviews</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <h2>¿Listo para reservar?</h2>
+    <p>Consigue el mejor precio para tu alquiler de coche hoy mismo</p>
+    <div class="cta-btns">
+        <a href="#" class="btn-cta-white">Reservar Ahora &#8594;</a>
+        <a href="https://wa.me/34600000000" class="btn-cta-ghost">&#128172; WhatsApp</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div>
+            <a href="#" class="logo">nova<span>rent</span></a>
+            <p class="footer-desc">Tu empresa de confianza para el alquiler de vehículos. Servicio personalizado, precios transparentes y la mejor flota.</p>
+        </div>
+        <div>
+            <h4>Empresa</h4>
+            <ul>
+                <li><a href="#">Sobre Nosotros</a></li>
+                <li><a href="#">Flota</a></li>
+                <li><a href="#">Condiciones</a></li>
+                <li><a href="#">Blog</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Ayuda</h4>
+            <ul>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contacto</a></li>
+                <li><a href="#">Privacidad</a></li>
+                <li><a href="#">Cookies</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Contacto</h4>
+            <ul>
+                <li><a href="tel:+34600000000">+34 600 000 000</a></li>
+                <li><a href="mailto:info@nova-rent.com">info@nova-rent.com</a></li>
+                <li><a href="https://wa.me/34600000000">WhatsApp</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>&copy; 2026 Nova Rent. Todos los derechos reservados.</span>
+        <span>Hecho con amor</span>
+    </div>
+</footer>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/34600000000" class="wa-btn" target="_blank">&#128172;</a>
+
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            e.preventDefault();
+            const t = document.querySelector(a.getAttribute('href'));
+            if (t) t.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('nav').classList.remove('open');
+        });
+    });
+</script>
+
+</body>
+</html>
