@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NOVA Rent — Alquiler y Compra de Coches Premium</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        :root{
+            --gold:#b8860b;--gold-light:#d4a017;--gold-bg:#fdf8ef;
+            --brown:#3c2415;--brown-light:#5c3d2e;
+            --sand:#f5e6d0;--sand-light:#faf3e8;
+            --white:#fff;--bg:#fdfaf5;
+            --g50:#faf8f5;--g100:#f0ece6;--g200:#e0d8ce;--g300:#c9bfb2;
+            --g400:#9e9488;--g500:#736a5e;--g700:#4a4035;--g900:#2a2118;
+            --r:10px;
+        }
+        body{font-family:'Inter',sans-serif;color:var(--g900);background:var(--white)}
+        .w{max-width:1240px;margin:0 auto;padding:0 24px}
+
+        /* TOP BAR */
+        .topbar{background:var(--brown);color:var(--sand);font-size:.75rem;padding:8px 0}
+        .topbar .w{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+        .topbar a{color:var(--gold-light);text-decoration:none;font-weight:600}
+
+        /* HEADER */
+        header{background:var(--white);border-bottom:1px solid var(--g200);position:sticky;top:0;z-index:100}
+        .h-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .logo-mark{width:40px;height:40px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Playfair Display',serif;font-weight:800;font-size:1.1rem}
+        .logo-name{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--brown)}
+        .logo-name span{color:var(--gold)}
+        .nav{display:flex;gap:24px;align-items:center;list-style:none}
+        .nav a{font-size:.85rem;color:var(--g500);text-decoration:none;font-weight:500;transition:.2s}
+        .nav a:hover{color:var(--gold)}
+        .btn{font-family:'Inter',sans-serif;font-weight:600;border:none;cursor:pointer;transition:.25s;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+        .btn-gold{background:var(--gold);color:#fff;padding:10px 22px;border-radius:var(--r);font-size:.88rem}
+        .btn-gold:hover{background:var(--gold-light);box-shadow:0 4px 16px rgba(184,134,11,.25)}
+        .btn-brown{background:var(--brown);color:#fff;padding:10px 22px;border-radius:var(--r);font-size:.88rem}
+        .btn-brown:hover{background:var(--brown-light)}
+        .btn-out{background:0;border:2px solid var(--g200);color:var(--g700);padding:9px 22px;border-radius:var(--r);font-size:.88rem}
+        .btn-out:hover{border-color:var(--gold);color:var(--gold)}
+        .btn-out-w{background:0;border:2px solid rgba(255,255,255,.3);color:#fff;padding:9px 22px;border-radius:var(--r);font-size:.88rem}
+        .btn-out-w:hover{border-color:#fff}
+        .btn-lg{padding:14px 32px;font-size:.95rem}
+        .burger{display:none;background:0;border:0;cursor:pointer;padding:6px}
+        .burger span{display:block;width:22px;height:2px;background:var(--g700);margin:5px 0}
+
+        /* HERO */
+        .hero{position:relative;min-height:560px;display:flex;align-items:center;overflow:hidden;background:var(--brown)}
+        .hero-bg{position:absolute;inset:0}
+        .hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.4}
+        .hero-grad{position:absolute;inset:0;background:linear-gradient(135deg,rgba(60,36,21,.9) 0%,rgba(60,36,21,.5) 50%,rgba(184,134,11,.1) 100%)}
+        .hero-inner{position:relative;z-index:2;width:100%;padding:60px 0}
+        .hero-grid{display:grid;grid-template-columns:1fr 400px;gap:60px;align-items:center}
+        .hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(184,134,11,.2);border:1px solid rgba(184,134,11,.4);color:var(--gold-light);font-size:.78rem;font-weight:600;padding:6px 14px;border-radius:50px;margin-bottom:16px}
+        .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4.5vw,3.2rem);font-weight:700;line-height:1.1;color:#fff;margin-bottom:16px}
+        .hero h1 span{color:var(--gold-light)}
+        .hero-desc{color:rgba(255,255,255,.65);font-size:1rem;line-height:1.7;margin-bottom:24px}
+        .hero-checks{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+        .hc{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.8);font-size:.88rem}
+        .hc-dot{width:22px;height:22px;border-radius:50%;background:rgba(184,134,11,.25);color:var(--gold-light);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700}
+        .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+
+        /* HERO CARD */
+        .hero-card{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:28px}
+        .hero-card h3{color:#fff;font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:4px}
+        .hero-card .sub{color:rgba(255,255,255,.45);font-size:.82rem;margin-bottom:16px}
+        .hf-tabs{display:flex;gap:0;border:1px solid rgba(255,255,255,.15);border-radius:8px;overflow:hidden;margin-bottom:16px}
+        .hft{flex:1;padding:10px;text-align:center;font-size:.82rem;font-weight:600;cursor:pointer;background:0;border:0;color:rgba(255,255,255,.45);font-family:inherit;transition:.2s}
+        .hft.on{background:var(--gold);color:#fff}
+        .hft:hover:not(.on){background:rgba(255,255,255,.04)}
+        .hf-field{margin-bottom:12px}
+        .hf-field label{display:block;font-size:.7rem;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+        .hf-field input,.hf-field select{width:100%;padding:11px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#fff;font-size:.85rem;font-family:inherit}
+        .hf-field select option{background:var(--brown)}
+        .hf-field input:focus,.hf-field select:focus{outline:0;border-color:var(--gold)}
+        .hf-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+        /* SECTION */
+        .sec{padding:64px 0}
+        .sec-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+        .sec-bar h2{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700}
+        .sec-bar h2 span{color:var(--gold)}
+        .sec-bar a{color:var(--gold);font-size:.88rem;font-weight:600;text-decoration:none}
+
+        /* CAR CARDS */
+        .cars{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+        .car{background:#fff;border:1px solid var(--g200);border-radius:var(--r);overflow:hidden;transition:.25s}
+        .car:hover{box-shadow:0 8px 30px rgba(184,134,11,.1);transform:translateY(-4px)}
+        .car-img{height:190px;position:relative;overflow:hidden;background:var(--sand-light)}
+        .car-img img{width:100%;height:100%;object-fit:cover;transition:.3s}
+        .car:hover .car-img img{transform:scale(1.05)}
+        .car-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:4rem;background:var(--gold-bg)}
+        .car-badge{position:absolute;top:10px;left:10px;background:var(--gold);color:#fff;font-size:.68rem;font-weight:700;padding:4px 10px;border-radius:6px}
+        .car-fav{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+        .car-bd{padding:16px}
+        .car-nm{font-size:1rem;font-weight:700;margin-bottom:4px}
+        .car-sub{font-size:.78rem;color:var(--g400);margin-bottom:10px}
+        .car-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+        .ct{font-size:.72rem;color:var(--gold);background:var(--gold-bg);padding:4px 10px;border-radius:6px;font-weight:600}
+        .car-ft{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--g100)}
+        .car-pr{font-size:1.4rem;font-weight:800;color:var(--gold)}
+        .car-pr small{font-size:.75rem;font-weight:400;color:var(--g400)}
+
+        /* FILTER */
+        .filter{background:var(--gold-bg);border:1px solid rgba(184,134,11,.15);border-radius:var(--r);padding:20px;margin-bottom:24px}
+        .filter-row{display:grid;grid-template-columns:repeat(4,1fr) auto;gap:12px;align-items:end}
+        .ff label{display:block;font-size:.72rem;font-weight:600;color:var(--g500);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+        .ff select{width:100%;padding:11px 12px;border:1px solid var(--g200);border-radius:8px;font-size:.85rem;font-family:inherit;background:#fff}
+        .ff select:focus{outline:0;border-color:var(--gold)}
+
+        /* BENEFITS */
+        .ben-sec{background:var(--brown);color:#fff;padding:64px 0}
+        .ben-sec .sec-bar h2{color:#fff}
+        .ben-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+        .ben{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:var(--r);padding:24px;transition:.2s}
+        .ben:hover{border-color:var(--gold);background:rgba(255,255,255,.06)}
+        .ben-i{width:44px;height:44px;border-radius:50%;background:rgba(184,134,11,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:12px}
+        .ben h3{font-size:.95rem;margin-bottom:4px}
+        .ben p{font-size:.82rem;color:rgba(255,255,255,.45);line-height:1.5}
+
+        /* REVIEWS */
+        .revs{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+        .rev{background:#fff;border:1px solid var(--g200);border-radius:var(--r);padding:20px}
+        .rev-s{color:var(--gold);font-size:.9rem;margin-bottom:8px}
+        .rev p{font-size:.88rem;color:var(--g500);line-height:1.6;margin-bottom:12px;font-style:italic}
+        .rev-w{display:flex;align-items:center;gap:8px}
+        .rev-a{width:36px;height:36px;border-radius:50%;background:var(--brown);color:var(--gold-light);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:.85rem}
+        .rev-n{font-size:.85rem;font-weight:600}
+        .rev-f{font-size:.72rem;color:var(--g400)}
+
+        /* CTA */
+        .cta{position:relative;padding:80px 24px;text-align:center;overflow:hidden;background:var(--bg)}
+        .cta::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--sand),var(--gold-bg))}
+        .cta h2{font-family:'Playfair Display',serif;color:var(--brown);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;margin-bottom:10px;position:relative}
+        .cta p{color:var(--g500);margin-bottom:24px;font-size:1rem;position:relative}
+        .cta-r{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative}
+
+        /* FOOTER */
+        footer{background:var(--brown);color:rgba(255,255,255,.4);padding:48px 0 16px}
+        .ft{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
+        .ft-brand{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+        .ft-brand .logo-mark{width:32px;height:32px;font-size:.8rem}
+        .ft-brand span{color:#fff;font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700}
+        .ft-brand span em{color:var(--gold-light);font-style:normal}
+        .ft-d{font-size:.82rem;line-height:1.6}
+        footer h5{color:var(--gold-light);font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
+        footer ul{list-style:none}
+        footer li{margin-bottom:4px}
+        footer a{color:rgba(255,255,255,.4);text-decoration:none;font-size:.82rem;transition:.2s}
+        footer a:hover{color:var(--gold-light)}
+        .ft-social{display:flex;gap:8px;margin-top:10px}
+        .ft-social a{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff}
+        .ft-social a:hover{background:var(--gold)}
+        .ft-bot{border-top:1px solid rgba(255,255,255,.06);padding-top:12px;display:flex;justify-content:space-between;font-size:.72rem;flex-wrap:wrap;gap:6px}
+
+        .wa{position:fixed;bottom:20px;right:20px;z-index:99;width:56px;height:56px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;color:#fff;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:.3s}
+        .wa:hover{transform:scale(1.1)}
+
+        @media(max-width:1024px){.hero-grid{grid-template-columns:1fr;gap:32px}.hero-card{max-width:480px}.ben-grid{grid-template-columns:1fr 1fr}}
+        @media(max-width:768px){
+            .nav{display:none}.burger{display:block}
+            .nav.on{display:flex;flex-direction:column;position:absolute;top:68px;left:0;right:0;background:#fff;padding:16px 24px;gap:10px;border-bottom:1px solid var(--g200);z-index:100}
+            .topbar{display:none}
+            .hero-inner{padding:80px 0 40px}
+            .cars{grid-template-columns:1fr 1fr}
+            .ben-grid,.revs{grid-template-columns:1fr}
+            .filter-row{grid-template-columns:1fr 1fr}
+            .ft{grid-template-columns:1fr 1fr}
+            .sec{padding:48px 0}
+        }
+        @media(max-width:520px){
+            .cars{grid-template-columns:1fr}
+            .ft{grid-template-columns:1fr}
+            .ft-bot{flex-direction:column}
+            .filter-row{grid-template-columns:1fr}
+            .hero-btns,.cta-r{flex-direction:column;align-items:stretch;text-align:center}
+        }
+    </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+    <div class="w">
+        <span>&#127775; Servicio premium en toda la Costa del Sol</span>
+        <div style="display:flex;gap:16px">
+            <a href="mailto:info@nova-rent.com">info@nova-rent.com</a>
+            <a href="tel:+34600334455">+34 600 33 44 55</a>
+        </div>
+    </div>
+</div>
+
+<!-- HEADER -->
+<header>
+    <div class="w h-in">
+        <a href="#" class="logo">
+            <div class="logo-mark">N</div>
+            <div class="logo-name">Nova <span>Rent</span></div>
+        </a>
+        <ul class="nav" id="nav">
+            <li><a href="#alquiler">Alquilar</a></li>
+            <li><a href="#compra">Comprar</a></li>
+            <li><a href="#ventajas">Ventajas</a></li>
+            <li><a href="#opiniones">Opiniones</a></li>
+            <li><a href="tel:+34600334455" style="color:var(--brown);font-weight:700">&#128222; +34 600 33 44 55</a></li>
+            <li><a href="#" class="btn btn-gold">Reservar</a></li>
+        </ul>
+        <button class="burger" onclick="document.getElementById('nav').classList.toggle('on')">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-bg"><img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1400&q=80" alt="Road"></div>
+    <div class="hero-grad"></div>
+    <div class="w hero-inner">
+        <div class="hero-grid">
+            <div>
+                <div class="hero-tag">&#127775; Experiencia Premium de Alquiler</div>
+                <h1>Tu viaje merece un coche <span>excepcional</span></h1>
+                <p class="hero-desc">Alquiler y compra de veh&iacute;culos de calidad con un servicio que cuida cada detalle.</p>
+                <div class="hero-checks">
+                    <div class="hc"><div class="hc-dot">&#10003;</div>Veh&iacute;culos revisados y garantizados</div>
+                    <div class="hc"><div class="hc-dot">&#10003;</div>Seguro sin franquicia incluido</div>
+                    <div class="hc"><div class="hc-dot">&#10003;</div>Entrega en aeropuerto y hotel</div>
+                    <div class="hc"><div class="hc-dot">&#10003;</div>Atenci&oacute;n personalizada 24/7</div>
+                </div>
+                <div class="hero-btns">
+                    <a href="#alquiler" class="btn btn-gold btn-lg">Ver coches &darr;</a>
+                    <a href="https://wa.me/34600000000" class="btn btn-out-w btn-lg">&#128172; WhatsApp</a>
+                </div>
+            </div>
+            <div class="hero-card">
+                <h3>Busca tu coche</h3>
+                <p class="sub">Reserva en 2 minutos</p>
+                <div class="hf-tabs">
+                    <button class="hft on" onclick="this.parentElement.querySelectorAll('.hft').forEach(t=>t.classList.remove('on'));this.classList.add('on')">Alquilar</button>
+                    <button class="hft" onclick="this.parentElement.querySelectorAll('.hft').forEach(t=>t.classList.remove('on'));this.classList.add('on')">Compra</button>
+                </div>
+                <div class="hf-field"><label>Lugar de recogida</label><select><option>Aeropuerto M&aacute;laga</option><option>Centro ciudad</option><option>Estaci&oacute;n de tren</option><option>Hotel</option></select></div>
+                <div class="hf-row">
+                    <div class="hf-field"><label>Desde</label><input type="date"></div>
+                    <div class="hf-field"><label>Hasta</label><input type="date"></div>
+                </div>
+                <div class="hf-field"><label>Hora</label><input type="time" value="10:00"></div>
+                <button class="btn btn-gold btn-lg" style="width:100%;margin-top:4px">Buscar coches</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- RENTAL -->
+<section class="sec" id="alquiler">
+    <div class="w">
+        <div class="sec-bar">
+            <h2>Populares de <span>alquiler</span></h2>
+            <a href="#">Ver todos &rarr;</a>
+        </div>
+        <div class="cars">
+            <div class="car">
+                <div class="car-img">
+                    <img src="https://images.unsplash.com/photo-1609521263047-f8f205293f24?w=600&q=80" alt="BMW" onerror="this.outerHTML='<div class=car-ph>&#128663;</div>'">
+                    <div class="car-badge">Premium</div><div class="car-fav">&#9825;</div>
+                </div>
+                <div class="car-bd">
+                    <div class="car-nm">BMW 3 Series 2024</div>
+                    <div class="car-sub">Sed&aacute;n &middot; Autom&aacute;tico &middot; Di&eacute;sel</div>
+                    <div class="car-tags"><span class="ct">&#128101; 5</span><span class="ct">GPS</span><span class="ct">A/C</span></div>
+                    <div class="car-ft"><div class="car-pr">75&euro; <small>/d&iacute;a</small></div><button class="btn btn-gold" style="padding:8px 16px;font-size:.82rem">Reservar</button></div>
+                </div>
+            </div>
+            <div class="car">
+                <div class="car-img">
+                    <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=600&q=80" alt="Mercedes" onerror="this.outerHTML='<div class=car-ph>&#128664;</div>'">
+                    <div class="car-badge">Premium</div><div class="car-fav">&#9825;</div>
+                </div>
+                <div class="car-bd">
+                    <div class="car-nm">Mercedes Clase A 2024</div>
+                    <div class="car-sub">Compacto &middot; Autom&aacute;tico &middot; Gasolina</div>
+                    <div class="car-tags"><span class="ct">&#128101; 5</span><span class="ct">GPS</span><span class="ct">A/C</span></div>
+                    <div class="car-ft"><div class="car-pr">85&euro; <small>/d&iacute;a</small></div><button class="btn btn-gold" style="padding:8px 16px;font-size:.82rem">Reservar</button></div>
+                </div>
+            </div>
+            <div class="car">
+                <div class="car-img">
+                    <img src="https://images.unsplash.com/photo-1606611013016-969c19ba27a5?w=600&q=80" alt="Seat" onerror="this.outerHTML='<div class=car-ph>&#128663;</div>'">
+                    <div class="car-fav">&#9825;</div>
+                </div>
+                <div class="car-bd">
+                    <div class="car-nm">Seat Ibiza 2024</div>
+                    <div class="car-sub">Compacto &middot; Manual &middot; Gasolina</div>
+                    <div class="car-tags"><span class="ct">&#128101; 5</span><span class="ct">A/C</span></div>
+                    <div class="car-ft"><div class="car-pr">25&euro; <small>/d&iacute;a</small></div><button class="btn btn-gold" style="padding:8px 16px;font-size:.82rem">Reservar</button></div>
+                </div>
+            </div>
+            <div class="car">
+                <div class="car-img">
+                    <img src="https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?w=600&q=80" alt="RAV4" onerror="this.outerHTML='<div class=car-ph>&#128665;</div>'">
+                    <div class="car-badge">SUV</div><div class="car-fav">&#9825;</div>
+                </div>
+                <div class="car-bd">
+                    <div class="car-nm">Toyota RAV4 2024</div>
+                    <div class="car-sub">SUV &middot; Autom&aacute;tico &middot; H&iacute;brido</div>
+                    <div class="car-tags"><span class="ct">&#128101; 5</span><span class="ct">4x4</span><span class="ct">A/C</span></div>
+                    <div class="car-ft"><div class="car-pr">65&euro; <small>/d&iacute;a</small></div><button class="btn btn-gold" style="padding:8px 16px;font-size:.82rem">Reservar</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SALE -->
+<section class="sec" id="compra" style="background:var(--bg)">
+    <div class="w">
+        <div class="sec-bar">
+            <h2>Coches <span>en venta</span></h2>
+            <a href="#">Ver todos &rarr;</a>
+        </div>
+        <div class="filter">
+            <div class="filter-row">
+                <div class="ff"><label>Marca</label><select><option>Todas</option><option>BMW</option><option>Mercedes</option><option>Audi</option></select></div>
+                <div class="ff"><label>Precio</label><select><option>Cualquier</option><option>Hasta 15.000&euro;</option><option>15-25.000&euro;</option><option>25.000+&euro;</option></select></div>
+                <div class="ff"><label>Combustible</label><select><option>Todos</option><option>Gasolina</option><option>Di&eacute;sel</option><option>H&iacute;brido</option></select></div>
+                <div class="ff"><label>Cambio</label><select><option>Todos</option><option>Autom&aacute;tico</option><option>Manual</option></select></div>
+                <button class="btn btn-brown" style="height:44px;padding:0 20px">&#128269; Buscar</button>
+            </div>
+        </div>
+        <div class="cars">
+            <div class="car">
+                <div class="car-img"><img src="https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=80" alt="BMW 5" onerror="this.outerHTML='<div class=car-ph>&#128663;</div>'"><div class="car-fav">&#9825;</div></div>
+                <div class="car-bd">
+                    <div class="car-nm">BMW 5 Series 2022</div>
+                    <div class="car-sub">23.000 km &middot; Di&eacute;sel &middot; Autom&aacute;tico</div>
+                    <div class="car-ft"><div class="car-pr">32.500&euro;</div><button class="btn btn-out" style="padding:8px 16px;font-size:.82rem">Ver m&aacute;s</button></div>
+                </div>
+            </div>
+            <div class="car">
+                <div class="car-img"><img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?w=600&q=80" alt="Mercedes C" onerror="this.outerHTML='<div class=car-ph>&#128664;</div>'"><div class="car-fav">&#9825;</div></div>
+                <div class="car-bd">
+                    <div class="car-nm">Mercedes C-Class 2023</div>
+                    <div class="car-sub">15.000 km &middot; Gasolina &middot; Autom&aacute;tico</div>
+                    <div class="car-ft"><div class="car-pr">38.900&euro;</div><button class="btn btn-out" style="padding:8px 16px;font-size:.82rem">Ver m&aacute;s</button></div>
+                </div>
+            </div>
+            <div class="car">
+                <div class="car-img"><img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?w=600&q=80" alt="Audi" onerror="this.outerHTML='<div class=car-ph>&#128664;</div>'"><div class="car-fav">&#9825;</div></div>
+                <div class="car-bd">
+                    <div class="car-nm">Audi A4 2022</div>
+                    <div class="car-sub">28.000 km &middot; Di&eacute;sel &middot; Autom&aacute;tico</div>
+                    <div class="car-ft"><div class="car-pr">27.800&euro;</div><button class="btn btn-out" style="padding:8px 16px;font-size:.82rem">Ver m&aacute;s</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BENEFITS -->
+<section class="ben-sec" id="ventajas">
+    <div class="w">
+        <div class="sec-bar"><h2>&iquest;Por qu&eacute; <span>Nova Rent</span>?</h2></div>
+        <div class="ben-grid">
+            <div class="ben"><div class="ben-i">&#128176;</div><h3>Sin costes ocultos</h3><p>Precio final cerrado. Transparencia total.</p></div>
+            <div class="ben"><div class="ben-i">&#128274;</div><h3>Seguro sin franquicia</h3><p>Todo riesgo incluido en el precio.</p></div>
+            <div class="ben"><div class="ben-i">&#128205;</div><h3>Entrega donde quieras</h3><p>Aeropuerto, hotel o tu direcci&oacute;n.</p></div>
+            <div class="ben"><div class="ben-i">&#128260;</div><h3>Cancela gratis</h3><p>Hasta 24h antes sin ning&uacute;n coste.</p></div>
+            <div class="ben"><div class="ben-i">&#128222;</div><h3>WhatsApp 24/7</h3><p>Atenci&oacute;n personalizada al instante.</p></div>
+            <div class="ben"><div class="ben-i">&#11088;</div><h3>Flota premium</h3><p>Coches de menos de 2 a&ntilde;os impecables.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="sec" id="opiniones">
+    <div class="w">
+        <div class="sec-bar"><h2>Opiniones de <span>nuestros clientes</span></h2></div>
+        <div class="revs">
+            <div class="rev"><div class="rev-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"Alquil&eacute; un BMW para recorrer la costa. Experiencia de lujo a un precio justo."</p><div class="rev-w"><div class="rev-a">CM</div><div><div class="rev-n">Carmen Mu&ntilde;oz</div><div class="rev-f">Google</div></div></div></div>
+            <div class="rev"><div class="rev-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"Servicio impecable en el aeropuerto de M&aacute;laga. El coche estaba perfecto."</p><div class="rev-w"><div class="rev-a">JR</div><div><div class="rev-n">Javier Reyes</div><div class="rev-f">Trustpilot</div></div></div></div>
+            <div class="rev"><div class="rev-s">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>"Compr&eacute; un Mercedes. Proceso transparente, trato exquisito. Muy recomendable."</p><div class="rev-w"><div class="rev-a">IS</div><div><div class="rev-n">Isabel Serrano</div><div class="rev-f">Google</div></div></div></div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <h2>Tu pr&oacute;xima aventura comienza aqu&iacute;</h2>
+    <p>Alquila o compra tu coche con las mejores condiciones del mercado</p>
+    <div class="cta-r">
+        <a href="#alquiler" class="btn btn-gold btn-lg">Reservar Ahora</a>
+        <a href="https://wa.me/34600000000" class="btn btn-brown btn-lg">&#128172; WhatsApp</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="w">
+        <div class="ft">
+            <div>
+                <div class="ft-brand"><div class="logo-mark" style="width:32px;height:32px;font-size:.8rem">N</div><span>Nova <em>Rent</em></span></div>
+                <p class="ft-d">Alquiler y venta de veh&iacute;culos en Espa&ntilde;a. M&aacute;s de 10 a&ntilde;os de servicio premium.</p>
+                <div class="ft-social"><a href="#">f</a><a href="#">ig</a><a href="#">yt</a></div>
+            </div>
+            <div><h5>Empresa</h5><ul><li><a href="#">Sobre nosotros</a></li><li><a href="#">Flota</a></li><li><a href="#">Condiciones</a></li></ul></div>
+            <div><h5>Soporte</h5><ul><li><a href="#">FAQ</a></li><li><a href="#">Contacto</a></li><li><a href="#">Privacidad</a></li></ul></div>
+            <div><h5>Contacto</h5><ul><li><a href="tel:+34600334455">&#128222; +34 600 33 44 55</a></li><li><a href="mailto:info@nova-rent.com">&#9993; info@nova-rent.com</a></li><li><a href="https://wa.me/34600000000">&#128172; WhatsApp</a></li></ul></div>
+        </div>
+        <div class="ft-bot"><span>&copy; 2026 Nova Rent</span><span>Todos los derechos reservados</span></div>
+    </div>
+</footer>
+
+<a href="https://wa.me/34600000000" class="wa" target="_blank">&#128172;</a>
+
+<script>
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(a.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth'});document.getElementById('nav').classList.remove('on')})});
+</script>
+</body>
+</html>
