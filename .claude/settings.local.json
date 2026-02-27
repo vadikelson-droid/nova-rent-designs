@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.nova-rent.com)",
+      "Bash(git --version)",
+      "Bash(gh --version)",
+      "Bash(gh auth status)",
+      "Bash(winget --version)",
+      "Bash(export PATH=\"$PATH:/c/Program Files/GitHub CLI\")",
+      "Bash(git config user.email \"vadikelson-droid@users.noreply.github.com\")",
+      "Bash(git config user.name \"vadikelson-droid\")",
+      "Bash(git commit -m \"Add Nova Rent design variants\")",
+      "Bash(gh repo create nova-rent-designs --public --source=. --push)",
+      "Bash(gh api repos/vadikelson-droid/nova-rent-designs/pages -X POST -f \"build_type=legacy\" -f \"source[branch]=master\" -f \"source[path]=/\")"
+    ]
+  }
+}
